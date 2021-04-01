@@ -21,7 +21,6 @@ func parse(ctx context.Context, url string) (*html.Node, error) {
 		// https://golang.org/pkg/net/http/
 		// Clients and Transports are safe for concurrent use by multiple goroutines and for efficiency should only be created once and re-used.
 		// r, err := http.Get(url)
-		fmt.Println("sending the request to:", url)
 		client := &http.Client{
 			Timeout: 2 * time.Second,
 		}

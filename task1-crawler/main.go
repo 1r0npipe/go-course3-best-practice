@@ -26,7 +26,7 @@ var (
 	// насколько глубоко нам надо смотреть (например, 10)
 	depthLimit int
 
-	timeout int = 3
+	timeout = 30 * time.Second
 )
 
 // Как вы помните, функция инициализации стартует первой
@@ -48,7 +48,7 @@ func main() {
 	fmt.Println("PID:", os.Getpid())
 	started := time.Now()
 
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
 	
 	crawler := newCrawler(depthLimit)
