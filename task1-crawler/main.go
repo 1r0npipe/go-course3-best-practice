@@ -88,7 +88,7 @@ func watchSignals(c *crawler, cancel context.CancelFunc) {
 		switch sig {
 		case syscall.SIGUSR1: 
 			c.maxDepth += 10
-			log.Printf("got signal %q, the max depth gets increased by 10, and now is: %d", sig, c.maxDepth)
+			log.Printf("got signal %s, the max depth gets increased by 10, and now is: %d", sig.String(), c.maxDepth)
 			continue
 		default:
 			log.Printf("got signal %q", sig.String())
@@ -118,7 +118,6 @@ func watchCrawler(ctx context.Context, results <-chan crawlResult, maxErrors, ma
 				}
 
 				log.Printf("crawling result: %v", result.msg)
-				time.After(time.Duration(timeout) * time.Second)
 				maxResults--
 				if maxResults <= 0 {
 					log.Println("got max results")

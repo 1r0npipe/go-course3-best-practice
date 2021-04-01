@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"golang.org/x/net/html"
 )
@@ -20,7 +21,10 @@ func parse(ctx context.Context, url string) (*html.Node, error) {
 		// https://golang.org/pkg/net/http/
 		// Clients and Transports are safe for concurrent use by multiple goroutines and for efficiency should only be created once and re-used.
 		// r, err := http.Get(url)
-		client := &http.Client{}
+		fmt.Println("sending the request to:", url)
+		client := &http.Client{
+			Timeout: 2 * time.Second,
+		}
 		r, err := client.Get(url)
 		if err != nil {
 			return nil, fmt.Errorf("can't get page")

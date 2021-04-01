@@ -25,17 +25,12 @@ func newCrawler(maxDepth int) *crawler {
 		maxDepth: maxDepth,
 	}
 }
-var (
-	// этот параметер может быть переопределен в вызове
-	// основной функции, время на мягкое завершение
-	shutdownTimer int = 3
-)
 
 // рекурсивно сканируем страницы
 func (c *crawler) run(ctx context.Context, url string, results chan<- crawlResult, depth int) {
 	// просто для того, чтобы успевать следить за выводом программы, можно убрать :)
 	time.Sleep(2 * time.Second)
-	genericCtx, cancelForAll := context.WithTimeout(context.Background(), time.Duration(shutdownTimer) * time.Second)
+	genericCtx, cancelForAll := context.WithTimeout(context.Background(), 1 * time.Second)
 	defer cancelForAll()
 	// проверяем что контекст исполнения актуален
 	select {
@@ -77,7 +72,7 @@ func (c *crawler) run(ctx context.Context, url string, results chan<- crawlResul
 			if c.checkVisited(link) {
 				continue
 			}
-
+			//depth = depth + 1
 			go c.run(ctx, link, results, depth)
 		}
 	}
