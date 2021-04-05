@@ -87,7 +87,9 @@ func watchSignals(c *crawler, cancel context.CancelFunc) {
 		sig := <-osSignalChan
 		switch sig {
 		case syscall.SIGUSR1: 
+			c.Lock()
 			c.maxDepth += 10
+			c.Unlock()
 			log.Printf("got signal %s, the max depth gets increased by 10, and now is: %d", sig.String(), c.maxDepth)
 			continue
 		default:
