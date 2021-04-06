@@ -41,7 +41,7 @@ func (c *crawler) run(ctx context.Context, url string, results chan<- crawlResul
 		if depth >= c.maxDepth {
 			return
 		}
-		c.Unlock()
+		defer c.Unlock()
 		page, err := parse(ctx, url)
 		if err != nil {
 			// ошибку отправляем в канал, а не обрабатываем на месте
