@@ -37,10 +37,11 @@ func (c *crawler) run(ctx context.Context, url string, results chan<- crawlResul
 
 	default:
 		// проверка глубины
+		c.Lock()
 		if depth >= c.maxDepth {
 			return
 		}
-
+		c.Unlock()
 		page, err := parse(ctx, url)
 		if err != nil {
 			// ошибку отправляем в канал, а не обрабатываем на месте
