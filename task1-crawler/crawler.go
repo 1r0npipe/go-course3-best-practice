@@ -30,18 +30,17 @@ func newCrawler(maxDepth int) *crawler {
 func (c *crawler) run(ctx context.Context, url string, results chan<- crawlResult, depth int) {
 	// просто для того, чтобы успевать следить за выводом программы, можно убрать :)
 	time.Sleep(2 * time.Second)
-	defer c.Unlock()
+
 	// проверяем что контекст исполнения актуален
 	select {
 	case <-ctx.Done():
 		return
-
 	default:
 		// проверка глубины
-		c.Lock()
 		if depth >= c.maxDepth {
 			return
 		}
+
 		page, err := parse(ctx, url)
 		if err != nil {
 			// ошибку отправляем в канал, а не обрабатываем на месте
