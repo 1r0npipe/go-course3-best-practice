@@ -70,8 +70,7 @@ func (c *crawler) run(ctx context.Context, url string, results chan<- crawlResul
 			if c.checkVisited(link) {
 				continue
 			}
-			depth = depth + 1
-			go c.run(ctx, link, results, depth)
+			go c.run(ctx, link, results, depth+1)
 		}
 	}
 }
