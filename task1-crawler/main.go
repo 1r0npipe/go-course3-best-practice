@@ -50,7 +50,7 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
 	defer cancel()
-	
+
 	crawler := newCrawler(depthLimit)
 
 	// запускаем горутину с каналом смотрящим за сигналами
@@ -80,13 +80,13 @@ func watchSignals(c *crawler, cancel context.CancelFunc) {
 		syscall.SIGINT,
 		syscall.SIGTERM,
 		syscall.SIGUSR1)
-	
+
 	// ожидаем сигнал на повышение глубины поиска либо по умолчанию на вероятное завершение
 	// если придет сигнал отличный от SIGUSR1
 	for {
 		sig := <-osSignalChan
 		switch sig {
-		case syscall.SIGUSR1: 
+		case syscall.SIGUSR1:
 			c.Lock()
 			c.maxDepth += 10
 			c.Unlock()
