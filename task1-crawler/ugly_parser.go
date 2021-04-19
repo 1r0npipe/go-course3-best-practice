@@ -15,7 +15,7 @@ func parse(ctx context.Context, url string) (*html.Node, error) {
 	select {
 	case <-ctx.Done():
 		return nil, fmt.Errorf("the timeout for parser is caught up, url: %v", url)
-	default:	 	
+	default:
 		// что здесь должно быть вместо http.Get? :)
 		// судя по тому что я прочитал, лучше использовать Transport or Clinet:
 		// https://golang.org/pkg/net/http/
@@ -25,6 +25,7 @@ func parse(ctx context.Context, url string) (*html.Node, error) {
 			Timeout: 2 * time.Second,
 		}
 		r, err := client.Get(url)
+		defer r.Body.Close()
 		if err != nil {
 			return nil, fmt.Errorf("can't get page")
 		}
